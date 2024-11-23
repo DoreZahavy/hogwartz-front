@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Your App Name',
-        short_name: 'AppName',
-        description: 'Your app description',
+        name: 'Wartz!',
+        short_name: 'Wartz!',
+        description: 'The great houses competition',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
