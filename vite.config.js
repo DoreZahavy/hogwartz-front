@@ -4,8 +4,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: '../backend/public',
+    emptyOutDir: true
+  },
   plugins: [
     react(),
+    
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
@@ -32,9 +37,22 @@ export default defineConfig({
             src: 'hogwartz-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
           },
         ],
+        screenshots: [
+          {
+            src: 'home-475x961.png',
+            sizes: '475x961',
+            type: 'image/png',
+            label: 'Home screen'
+          },
+          {
+            src: 'secure-475x961.png',
+            sizes: '475x961',
+            type: 'image/png',
+            label: 'Security'
+          }
+        ]
       },
     }),
 

@@ -15,6 +15,8 @@ import ScoreModal from "./ScoreModal";
 
 
 
+
+
 export function HomePage() {
 
 
@@ -22,28 +24,32 @@ export function HomePage() {
     const [scoreBoard, setScoreBoard] = useState(null)
     const [selectedHouse, setSelectedHouse] = useState(null)
 
+
     useEffect(() => {
         loadScores()
     }, [])
+    // useEffect(() => {
+    //     if (deferredPrompt) deferredPrompt.prompt()
+    // }, [deferredPrompt])
 
     async function loadScores() {
-        try{
+        try {
 
             const scoreBoard = await scoreService.fetchScoreBoard()
             setScoreBoard(scoreBoard)
-        } catch(err){
+        } catch (err) {
             showErrorMsg('Failed loading scores')
         }
     }
 
     async function raisePoints(amount) {
-        try{
+        try {
 
             const newScoreBoard = await scoreService.raisePoints(selectedHouse, amount)
             showSuccessMsg(`${amount} points to ${selectedHouse}`)
             setScoreBoard(newScoreBoard)
             setSelectedHouse(null)
-        } catch(err){
+        } catch (err) {
             showErrorMsg('Failed giving points')
 
         }
@@ -75,11 +81,16 @@ export function HomePage() {
 
     return (
         < main className="home-page" >
+
             <HomeHeader user={user} logout={onLogout} />
+
             {scoreBoard ?
                 <ScoreBoard scores={scoreBoard} setSelectedHouse={setSelectedHouse} /> :
                 <Loader />}
-            {!user && <CodeModal login={onLogin} />}
+            {!user && <CodeModal
+                login={onLogin}
+                
+            />}
             {selectedHouse && <ScoreModal
                 setSelectedHouse={setSelectedHouse}
                 raisePoints={raisePoints} />}
