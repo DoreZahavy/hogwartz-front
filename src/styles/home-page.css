@@ -1,0 +1,8 @@
+.home-page{
+    display: grid;
+    grid-template-rows: 70px 1fr;
+    grid-template-columns: minmax(1em, 1fr) minmax(auto,960px)  minmax(1em, 1fr);
+    height: 100vh;
+}
+
+

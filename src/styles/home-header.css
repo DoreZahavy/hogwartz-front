@@ -1,0 +1,32 @@
+.home-header{
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: space-between;
+    padding-inline-end: 1em;
+    align-items: center;
+    background-color: antiquewhite;
+
+
+    
+}
+
+.home-header .logo {
+    height: 70px;
+}
+.home-header .header-nav img{
+    height: 2em;
+}
+
+.header-nav{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+  
+
+}
+
+
+.header-nav >*{
+    margin-inline-start: 1em;
+}

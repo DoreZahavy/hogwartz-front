@@ -1,0 +1,18 @@
+.score-board{
+    grid-column: 2;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+.score-board .score-preview{
+    text-align: center;
+    /* border: 1px solid darkgray;
+    padding: 1em;
+    border-radius: 1em; */
+
+}
+.score-board .score-preview img{
+ width: 100%;
+}

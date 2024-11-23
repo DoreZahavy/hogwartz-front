@@ -1,0 +1,42 @@
+.score-screen {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    background-color: rgb(0, 0, 0, 0.6);
+}
+.score-screen .score-modal {
+    background-color: antiquewhite;
+    border-radius: 1em;
+    padding: 1em;
+}
+.score-screen .score-modal .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.score-screen .score-modal img {
+    width: 3em;
+}
+.score-screen .score-modal .stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block-end: 1em;
+}
+.score-screen .score-modal button {
+    padding-inline: 0.5em;
+    font-weight: 700;
+    font-size: 1em;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5em;
+}
+.score-screen .score-modal button img {
+    width: 40px;
+}
+.score-screen .score-modal button span {
+    margin-inline-end: 0.5em;
+}

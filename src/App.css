@@ -1,0 +1,27 @@
+@import url("./styles/loader.css");
+@import url("./styles/user-msg.css");
+@import url("./styles/home-page.css");
+@import url("./styles/home-header.css");
+@import url("./styles/code-modal.css");
+@import url("./styles/score-modal.css");
+@import url("./styles/score-board.css");
+
+  * {
+    box-sizing: border-box;
+    
+  }
+
+
+html,
+body {
+ min-height: 100vh;
+ margin: 0;
+ padding: 0;
+}
+
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
