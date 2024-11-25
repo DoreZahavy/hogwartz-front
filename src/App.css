@@ -6,6 +6,7 @@
 @import url("./styles/score-modal.css");
 @import url("./styles/score-board.css");
 @import url("./styles/install-btn.css");
+@import url("./styles/admin-page.css");
 
   * {
     box-sizing: border-box;
@@ -25,5 +26,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flex-align {
+  display: flex;
+  align-items: center;
 }
 

@@ -1,12 +1,75 @@
+import { useEffect, useState } from "react"
+import { userService } from "../services/user.service"
+import Loader from "./Loader"
+import { showErrorMsg } from "../services/event-bus.service"
 
 
 
 export function AdminPage() {
 
+  const [users, setUsers] = useState(null)
+  const [userToEdit, setUserToEdit] = useState({ name: '', code: '' })
 
-    return (
-        < main className="admin-page" >
-          admin pageeee
-        </main >
-    )
+  function handleChange({ target }) {
+    const { name: field, value } = target
+    setUserToEdit((prevUser) => ({ ...prevUser, [field]: value }))
+  }
+
+  useEffect(() => {
+    loadUsers()
+  }, [])
+
+  async function loadUsers() {
+    const users = await userService.query()
+    setUsers(users)
+
+  }
+
+  async function onRemoveUser(userId) {
+    try {
+      await userService.removeUser(userId)
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId))
+    } catch (err) {
+      showErrorMsg('Failed deleting user')
+    }
+  }
+
+  async function onAddNewUser(ev) {
+    ev.preventDefault()
+    try {
+
+      const newUser = await userService.addNewUser(userToEdit)
+      setUsers(prevUsers => [...prevUsers, newUser])
+      setUserToEdit({ name: '', code: '' })
+    } catch (err) {
+      showErrorMsg('Failed adding new user')
+    }
+
+
+  }
+
+  if (!users) return <Loader />
+  // return <div>Users</div>
+  return (
+    < main className="admin-page" >
+      <h2>Welcome Admin</h2>
+      <ul >
+        {users.map((user) => (
+          <li key={user.id} className="user-preview">
+            <button onClick={() => { onRemoveUser(user.id) }}>X</button>
+            <h4>{user.name} |</h4>
+            <h5>Code: {user.code} |</h5>
+            <h5>Points left: {user.pointsLeft}</h5>
+          </li>
+        ))}
+      </ul>
+      <form onSubmit={onAddNewUser}>
+        <h3>Add new</h3>
+        <input value={userToEdit.name} onChange={handleChange} required type="text" name="name" placeholder="Name" />
+        <input value={userToEdit.code} onChange={handleChange} type="text" name="code" placeholder="Code (optional)" />
+        <button>ADD</button>
+      </form>
+
+    </main >
+  )
 }

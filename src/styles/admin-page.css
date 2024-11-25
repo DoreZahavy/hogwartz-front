@@ -1,0 +1,9 @@
+.user-preview{
+    display: flex;
+    align-items: center;
+    
+}
+.user-preview>*{
+ margin-inline-end: .5em;
+
+}
