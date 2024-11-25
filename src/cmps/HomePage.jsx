@@ -30,9 +30,7 @@ export function HomePage() {
     useEffect(() => {
         loadScores()
     }, [])
-    // useEffect(() => {
-    //     if (deferredPrompt) deferredPrompt.prompt()
-    // }, [deferredPrompt])
+
 
     async function loadScores() {
         try {
@@ -46,12 +44,24 @@ export function HomePage() {
 
     async function raisePoints(amount) {
         try {
-
+            console.log("🚀 ~ raisePoints ~ pointsLeft:", user.pointsLeft)
+            console.log("🚀 ~ raisePoints ~ amount:", amount)
+            if (user.pointsLeft < amount) {
+                showErrorMsg('Insufficient points')
+                return
+            }
             const newScoreBoard = await scoreService.raisePoints(selectedHouse, amount)
             showSuccessMsg(`${amount} points to ${selectedHouse}`)
             setScoreBoard(newScoreBoard)
             setSelectedHouse(null)
+            userService.updateUserPoints(user.pointsLeft - amount)
+            setUser(prevUser => {
+                const pointsLeft = prevUser.pointsLeft - amount
+                return { ...prevUser, pointsLeft }
+            })
         } catch (err) {
+            console.dir(err)
+            console.log(err)
             showErrorMsg('Failed giving points')
 
         }

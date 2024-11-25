@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { userService } from "../services/user.service"
 import Loader from "./Loader"
-import { showErrorMsg } from "../services/event-bus.service"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
+import { scoreService } from "../services/score.service"
 
 
 
@@ -48,6 +49,28 @@ export function AdminPage() {
 
   }
 
+  async function resetScoreBoard(){
+    try{
+
+      await scoreService.resetScores()
+      showSuccessMsg('Reset successful')
+    }catch(err){
+      showErrorMsg('Failed reset')
+    }
+  }
+  async function resetPointsLeft(){
+    try{
+
+      const newUsers = await userService.resetPoints()
+      setUsers(newUsers)
+      userService.updateUserPoints(20)
+      showSuccessMsg('Points refreshed')
+    }catch(err){
+      showErrorMsg('Failed giving points')
+    }
+  }
+
+
   if (!users) return <Loader />
   // return <div>Users</div>
   return (
@@ -68,8 +91,12 @@ export function AdminPage() {
         <input value={userToEdit.name} onChange={handleChange} required type="text" name="name" placeholder="Name" />
         <input value={userToEdit.code} onChange={handleChange} type="text" name="code" placeholder="Code (optional)" />
         <button>ADD</button>
-      </form>
 
+      </form>
+<div>
+  <button onClick={resetPointsLeft}>RESET POINTS LEFT</button>
+  <button onClick={resetScoreBoard}>RESET GAME</button>
+</div>
     </main >
   )
 }

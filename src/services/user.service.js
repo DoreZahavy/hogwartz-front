@@ -9,7 +9,17 @@ export const userService = {
   signup,
   getLoggedinUser,
   addNewUser,
-  removeUser
+  removeUser,
+  resetPoints,
+  updateUserPoints
+}
+
+function updateUserPoints(score) {
+  const sessionUser = JSON.parse(
+    sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER)
+  )
+  sessionUser.pointsLeft = score
+  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(sessionUser))
 }
 
 function getLoggedinUser() {
@@ -39,4 +49,8 @@ async function signup(signupInfo) {
 async function logout() {
   await httpService.post(`auth/logout`)
   sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+}
+
+async function resetPoints() {
+  return await httpService.put('user/reset-points')
 }
