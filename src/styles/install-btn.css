@@ -1,0 +1,11 @@
+.install-btn {
+    padding: 0.5em;
+    font-weight: 700;
+    font-size: 1em;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5em;
+  }
+ 

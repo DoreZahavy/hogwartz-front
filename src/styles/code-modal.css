@@ -17,6 +17,7 @@
 .code-modal .modal-header{
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 .code-screen .code-modal input{
 

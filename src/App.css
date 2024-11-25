@@ -5,6 +5,7 @@
 @import url("./styles/code-modal.css");
 @import url("./styles/score-modal.css");
 @import url("./styles/score-board.css");
+@import url("./styles/install-btn.css");
 
   * {
     box-sizing: border-box;
@@ -25,3 +26,4 @@ body {
   align-items: center;
   justify-content: center;
 }
+

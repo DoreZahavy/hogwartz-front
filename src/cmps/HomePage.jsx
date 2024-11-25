@@ -10,6 +10,7 @@ import ScoreBoard from "./ScoreBoard";
 import { scoreService } from "../services/score.service";
 import Loader from "./Loader";
 import ScoreModal from "./ScoreModal";
+import useInstallPWA from "../hooks/install-pwa";
 
 
 
@@ -23,6 +24,7 @@ export function HomePage() {
     const [user, setUser] = useState(userService.getLoggedinUser())
     const [scoreBoard, setScoreBoard] = useState(null)
     const [selectedHouse, setSelectedHouse] = useState(null)
+
 
 
     useEffect(() => {
@@ -89,9 +91,10 @@ export function HomePage() {
                 <Loader />}
             {!user && <CodeModal
                 login={onLogin}
-                
+
             />}
             {selectedHouse && <ScoreModal
+                selectedHouse={selectedHouse}
                 setSelectedHouse={setSelectedHouse}
                 raisePoints={raisePoints} />}
             <UserMsg />

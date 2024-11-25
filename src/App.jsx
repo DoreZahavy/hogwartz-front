@@ -5,32 +5,36 @@ import { userService } from './services/user.service'
 import { HomePage } from './cmps/HomePage'
 import { AdminPage } from './cmps/AdminPage'
 
+import { InstallProvider } from './cmps/InstallProvider'
+
 function App() {
+
+
   function RouteGuard({ children }) {
     const loggedinUser = userService.getLoggedinUser()
 
     if (loggedinUser.name !== 'Dean') return <Navigate to="/" />
     return children
-}
-
+  }
 
   return (
-    <Router>
-    
-            <Routes>
-                <Route element={<HomePage />} path="/"></Route>
-             
-                {/* <Route element={<CodePage />} path="/signin"></Route> */}
-            
-                <Route element={
-                    <RouteGuard>
-                        <AdminPage />
-                    </RouteGuard>
-                } path="/admin"></Route>
-            </Routes>
-        
+    <InstallProvider>
+      <Router>
 
-    </Router>
+        <Routes>
+          <Route element={<HomePage />} path="/"></Route>
+
+
+          <Route element={
+            <RouteGuard>
+              <AdminPage />
+            </RouteGuard>
+          } path="/admin"></Route>
+        </Routes>
+
+
+      </Router>
+    </InstallProvider>
   )
 }
 
