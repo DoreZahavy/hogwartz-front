@@ -3,6 +3,9 @@ import { userService } from "../services/user.service"
 import Loader from "./Loader"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
 import { scoreService } from "../services/score.service"
+import { Link } from 'react-router-dom'
+import { UserPreview } from "./UserPreview"
+
 
 
 
@@ -10,20 +13,38 @@ export function AdminPage() {
 
   const [users, setUsers] = useState(null)
   const [userToEdit, setUserToEdit] = useState({ name: '', code: '' })
+  const [resetAmount, setResetAmount] = useState(20)
+  const [scoreBoard, setScoreBoard] = useState(null)
+
+
+
 
   function handleChange({ target }) {
     const { name: field, value } = target
     setUserToEdit((prevUser) => ({ ...prevUser, [field]: value }))
   }
+  function handleAmountChange({ target }) {
+    setResetAmount(+target.value)
+  }
 
   useEffect(() => {
     loadUsers()
+    loadScores()
   }, [])
 
   async function loadUsers() {
     const users = await userService.query()
     setUsers(users)
+  }
 
+  async function loadScores() {
+    try {
+
+      const scoreBoard = await scoreService.fetchScoreBoard()
+      setScoreBoard(scoreBoard)
+    } catch (err) {
+      showErrorMsg('Failed loading scores')
+    }
   }
 
   async function onRemoveUser(userId) {
@@ -49,24 +70,40 @@ export function AdminPage() {
 
   }
 
-  async function resetScoreBoard(){
-    try{
+  async function resetScoreBoard() {
+    try {
 
-      await scoreService.resetScores()
+      const cleanScoreBoard = await scoreService.resetScores()
+      console.log("🚀 ~ resetScoreBoard ~ cleanScoreBoard:", cleanScoreBoard)
+      setScoreBoard(cleanScoreBoard)
       showSuccessMsg('Reset successful')
-    }catch(err){
+    } catch (err) {
       showErrorMsg('Failed reset')
     }
   }
-  async function resetPointsLeft(){
-    try{
 
-      const newUsers = await userService.resetPoints()
+
+  async function resetPointsLeft() {
+    try {
+
+      const newUsers = await userService.resetPoints(resetAmount)
       setUsers(newUsers)
       userService.updateUserPoints(20)
       showSuccessMsg('Points refreshed')
-    }catch(err){
+    } catch (err) {
       showErrorMsg('Failed giving points')
+    }
+  }
+  async function onDownloadCSV() {
+    try {
+      const url = process.env.NODE_ENV === 'production'
+        ? 'api/score/csv'
+        : '//localhost:3030/api/score/csv'
+      window.open(url, '_blank')
+
+      showSuccessMsg('Download successful')
+    } catch (err) {
+      showErrorMsg('Failed downloading scores')
     }
   }
 
@@ -78,25 +115,41 @@ export function AdminPage() {
       <h2>Welcome Admin</h2>
       <ul >
         {users.map((user) => (
-          <li key={user.id} className="user-preview">
-            <button onClick={() => { onRemoveUser(user.id) }}>X</button>
-            <h4>{user.name} |</h4>
-            <h5>Code: {user.code} |</h5>
-            <h5>Points left: {user.pointsLeft}</h5>
-          </li>
+          <UserPreview key={user.id} user={user} onRemoveUser={onRemoveUser} />
         ))}
       </ul>
+
       <form onSubmit={onAddNewUser}>
-        <h3>Add new</h3>
+        <h3>Add new user</h3>
         <input value={userToEdit.name} onChange={handleChange} required type="text" name="name" placeholder="Name" />
         <input value={userToEdit.code} onChange={handleChange} type="text" name="code" placeholder="Code (optional)" />
         <button>ADD</button>
-
       </form>
-<div>
-  <button onClick={resetPointsLeft}>RESET POINTS LEFT</button>
-  <button onClick={resetScoreBoard}>RESET GAME</button>
-</div>
+
+      <div style={{ 'marginBlock': '10px', gap: '10px', display: 'flex' }}>
+        <button onClick={resetPointsLeft}>RESET ALL USERS POINTS</button>
+        <input type="number" value={resetAmount} onChange={handleAmountChange} />
+      </div>
+      <div style={{ 'marginBlock': '10px', gap: '10px', display: 'flex' }}>
+        <button onClick={resetScoreBoard}>RESET ALL SCORES</button>
+        <button onClick={onDownloadCSV}>CSV</button>
+      </div>
+      <Link to={'/'}>Go back</Link>
+      {scoreBoard &&
+        <section className="score-board">
+
+          {scoreBoard.map(score => {
+            return (
+              <article className='score-preview' key={score.houseName}>
+                <h1>{score.houseName}</h1>
+                <h1>{score.score}</h1>
+              </article>
+            )
+          })}
+
+        </section>
+      }
+
     </main >
   )
 }

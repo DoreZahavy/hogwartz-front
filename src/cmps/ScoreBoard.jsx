@@ -5,7 +5,7 @@ import Hufflepuff from '../assets/Hufflepuff.webp'
 import Slytherin from '../assets/Slytherin.webp'
 
 
-export default function ScoreBoard({ scores , setSelectedHouse }) {
+export default function ScoreBoard({ scores, setSelectedHouse }) {
 
     const iconMap = {
         Gryffindor,
@@ -25,7 +25,8 @@ export default function ScoreBoard({ scores , setSelectedHouse }) {
                         <img onClick={() => setSelectedHouse(score.houseName)}
                             src={iconMap[score.houseName]}
                             alt={score.houseName} />
-                        <h1>{score.score}</h1>
+                        <h1>{score.houseName}</h1>
+                        {/* <h1>{score.score}</h1> */}
                     </article>
                 )
             })}

@@ -1,9 +1,16 @@
-.user-preview{
+.user-preview {
     display: flex;
     align-items: center;
-    
 }
-.user-preview>*{
- margin-inline-end: .5em;
+.user-preview > * {
+    margin-inline-end: 0.5em;
+}
 
+.admin-page .toggle-btn,
+button {
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
 }

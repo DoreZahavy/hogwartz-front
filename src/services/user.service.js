@@ -51,6 +51,6 @@ async function logout() {
   sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
 }
 
-async function resetPoints() {
-  return await httpService.put('user/reset-points')
+async function resetPoints(resetAmount) {
+  return await httpService.put('user/reset-points/'+resetAmount)
 }

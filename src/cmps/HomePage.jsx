@@ -44,8 +44,7 @@ export function HomePage() {
 
     async function raisePoints(amount) {
         try {
-            console.log("🚀 ~ raisePoints ~ pointsLeft:", user.pointsLeft)
-            console.log("🚀 ~ raisePoints ~ amount:", amount)
+         
             if (user.pointsLeft < amount) {
                 showErrorMsg('Insufficient points')
                 return
