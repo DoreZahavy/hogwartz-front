@@ -21,7 +21,7 @@ async function resetScores() {
 }
 
 async function downloadCSV() {
-  return await httpService.get(BASE_URL + '/csv', {
+  return await httpService.get(BASE_URL + '/csv', null, {
     responseType: 'blob'
   })
 }

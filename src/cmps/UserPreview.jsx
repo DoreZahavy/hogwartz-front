@@ -15,7 +15,7 @@ export function UserPreview({ user, onRemoveUser }) {
         <>
             <li className="user-preview">
 
-                <button onClick={() => { onRemoveUser(user.id) }}>X</button>
+                <button onClick={() => { onRemoveUser(user._id) }}>X</button>
                 <h4>{user.name} |</h4>
                 <h5>Code: {user.code} |</h5>
                 <h5>Points left: {user.pointsLeft}</h5>
@@ -35,8 +35,15 @@ function ActivityList({ activities }) {
 
     function formatTime(timestamp) {
         const date = new Date(timestamp)
-        return date.toLocaleTimeString()
-
+        return date.toLocaleTimeString('en-IL', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+            // year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+        })
     }
 
     if (!activities.length) return <p>No activities for this user</p>
@@ -44,8 +51,8 @@ function ActivityList({ activities }) {
     return (
         <ul>
             {activities.toSorted((a, b) => b.at - a.at).map((act) => (
-                <li>
-                    <p>{act.action} | At: {formatTime(act.at)}</p>
+                <li key={act.at}>
+                    <p>{formatTime(act.at)} - {act.action}</p>
                 </li>
             ))}
 

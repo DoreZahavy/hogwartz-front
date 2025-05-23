@@ -27,7 +27,9 @@ function getLoggedinUser() {
 }
 
 async function addNewUser(userInfo) {
-  return await httpService.post('user', userInfo)
+  // return await httpService.post('user', userInfo)
+  return await httpService.post(`auth/signup`, userInfo)
+
 }
 async function removeUser(userId) {
   return await httpService.delete(`user/${userId}`)
@@ -52,5 +54,5 @@ async function logout() {
 }
 
 async function resetPoints(resetAmount) {
-  return await httpService.put('user/reset-points/'+resetAmount)
+  return await httpService.put('user/reset-points/' + resetAmount)
 }

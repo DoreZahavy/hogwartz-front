@@ -50,7 +50,7 @@ export function AdminPage() {
   async function onRemoveUser(userId) {
     try {
       await userService.removeUser(userId)
-      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId))
+      setUsers(prevUsers => prevUsers.filter(user => user._id !== userId))
     } catch (err) {
       showErrorMsg('Failed deleting user')
     }
@@ -60,7 +60,7 @@ export function AdminPage() {
     ev.preventDefault()
     try {
 
-      const newUser = await userService.addNewUser(userToEdit)
+      const newUser = await userService.addNewUser({ ...userToEdit, pointsLeft: resetAmount })
       setUsers(prevUsers => [...prevUsers, newUser])
       setUserToEdit({ name: '', code: '' })
     } catch (err) {
@@ -74,7 +74,6 @@ export function AdminPage() {
     try {
 
       const cleanScoreBoard = await scoreService.resetScores()
-      console.log("🚀 ~ resetScoreBoard ~ cleanScoreBoard:", cleanScoreBoard)
       setScoreBoard(cleanScoreBoard)
       showSuccessMsg('Reset successful')
     } catch (err) {
@@ -94,28 +93,37 @@ export function AdminPage() {
       showErrorMsg('Failed giving points')
     }
   }
+
+
   async function onDownloadCSV() {
     try {
-      const url = process.env.NODE_ENV === 'production'
-        ? 'api/score/csv'
-        : '//localhost:3030/api/score/csv'
-      window.open(url, '_blank')
 
-      showSuccessMsg('Download successful')
+      const blob = await scoreService.downloadCSV()
+
+      const url = window.URL.createObjectURL(blob)
+
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'house_scores.csv'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+
+      window.URL.revokeObjectURL(url)
     } catch (err) {
-      showErrorMsg('Failed downloading scores')
+      console.error('CSV download failed:', err)
     }
+
   }
 
 
   if (!users) return <Loader />
-  // return <div>Users</div>
   return (
     < main className="admin-page" >
       <h2>Welcome Admin</h2>
       <ul >
         {users.map((user) => (
-          <UserPreview key={user.id} user={user} onRemoveUser={onRemoveUser} />
+          <UserPreview key={user._id} user={user} onRemoveUser={onRemoveUser} />
         ))}
       </ul>
 
@@ -133,6 +141,7 @@ export function AdminPage() {
       <div style={{ 'marginBlock': '10px', gap: '10px', display: 'flex' }}>
         <button onClick={resetScoreBoard}>RESET ALL SCORES</button>
         <button onClick={onDownloadCSV}>CSV</button>
+
       </div>
       <Link to={'/'}>Go back</Link>
       {scoreBoard &&
