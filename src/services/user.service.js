@@ -39,9 +39,16 @@ async function query() {
   return await httpService.get('user')
 }
 async function login(code) {
-  const user = await httpService.post(`auth/login`, { code })
-  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-  return user
+  console.log("🚀 ~ login ~ code:", code)
+  try {
+
+    const user = await httpService.post(`auth/login`, { code })
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
+    return user
+  } catch (err) {
+    console.log('err', err)
+    throw err
+  }
 }
 async function signup(signupInfo) {
   const user = await httpService.post(`auth/signup`, signupInfo)
